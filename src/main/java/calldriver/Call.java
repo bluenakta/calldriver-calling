@@ -13,12 +13,11 @@ public class Call {
     private Long id;
     private String callStatus;
 
+    @Transient
+    private String eventType;
+
     @PrePersist
     public void onPrePersist(){
-        Canceled canceled = new Canceled();
-        BeanUtils.copyProperties(this, canceled);
-        canceled.publishAfterCommit();
-
 
         CallReceived callReceived = new CallReceived();
         BeanUtils.copyProperties(this, callReceived);
@@ -29,21 +28,27 @@ public class Call {
 
         calldriver.external.Pay pay = new calldriver.external.Pay();
         // mappings goes here
+        pay.setCallId(this.id);
+        pay.setPayStatus("PAYED");
         Application.applicationContext.getBean(calldriver.external.PayService.class)
             .payRequest(pay);
 
-        //Following code causes dependency to external APIs
-        // it is NOT A GOOD PRACTICE. instead, Event-Policy mapping is recommended.
+    }
 
-        calldriver.external.Pay pay = new calldriver.external.Pay();
-        // mappings goes here
-        Application.applicationContext.getBean(calldriver.external.PayService.class)
-            .payRequest(pay);
+    @PostUpdate
+    public void onPostUpdate() {
 
+        if("payed".equals(this.eventType)) {
 
-        DriverRequested driverRequested = new DriverRequested();
-        BeanUtils.copyProperties(this, driverRequested);
-        driverRequested.publishAfterCommit();
+            DriverRequested driverRequested = new DriverRequested();
+            BeanUtils.copyProperties(this, driverRequested);
+            driverRequested.publishAfterCommit();
+
+        } else {
+            Canceled canceled = new Canceled();
+            BeanUtils.copyProperties(this, canceled);
+            canceled.publishAfterCommit();
+        }
 
 
     }
@@ -64,7 +69,11 @@ public class Call {
         this.callStatus = callStatus;
     }
 
+    public String getEventType() {
+        return eventType;
+    }
 
-
-
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
+    }
 }

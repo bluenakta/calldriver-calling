@@ -4,6 +4,7 @@ public class Pay {
 
     private Long id;
     private Long callId;
+    private String payStatus;
 
 
     public Long getId() {
@@ -21,5 +22,12 @@ public class Pay {
         this.callId = callId;
     }
 
+    public String getPayStatus() {
+        return payStatus;
+    }
+
+    public void setPayStatus(String payStatus) {
+        this.payStatus = payStatus;
+    }
 }
 
