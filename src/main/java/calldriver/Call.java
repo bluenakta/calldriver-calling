@@ -13,15 +13,9 @@ public class Call {
     private Long id;
     private String callStatus;
 
-    @Transient
-    private String eventType;
 
-    @PrePersist
-    public void onPrePersist(){
-
-        CallReceived callReceived = new CallReceived();
-        BeanUtils.copyProperties(this, callReceived);
-        callReceived.publishAfterCommit();
+    @PostPersist
+    public void onPostPersist(){
 
         //Following code causes dependency to external APIs
         // it is NOT A GOOD PRACTICE. instead, Event-Policy mapping is recommended.
@@ -38,11 +32,19 @@ public class Call {
     @PostUpdate
     public void onPostUpdate() {
 
-        if("payed".equals(this.eventType)) {
+
+        if("PAYED".equals(this.callStatus)) {
 
             DriverRequested driverRequested = new DriverRequested();
+
             BeanUtils.copyProperties(this, driverRequested);
+
+            System.out.println("-------------------------------");
+            System.out.println("------------------------------- " + this.callStatus);
+            System.out.println("-------------------------------");
             driverRequested.publishAfterCommit();
+
+        } else if("NODRIVER".equals(this.callStatus)) {
 
         } else {
             Canceled canceled = new Canceled();
@@ -69,11 +71,4 @@ public class Call {
         this.callStatus = callStatus;
     }
 
-    public String getEventType() {
-        return eventType;
-    }
-
-    public void setEventType(String eventType) {
-        this.eventType = eventType;
-    }
 }

@@ -18,12 +18,13 @@ public class PolicyHandler{
     public void wheneverPayed_PayComplete(@Payload Payed payed){
 
         if(payed.isMe()){
-            Call call = new Call();
-            call.setId(payed.getCallId());
-            call.setEventType(payed.getEventType());
-            call.setCallStatus("PAYED");
 
-            cr.save(call);
+            cr.findById(payed.getCallId()).ifPresent(call -> {
+
+                call.setCallStatus("PAYED");
+
+                cr.save(call);
+            });
 
         }
     }
@@ -32,12 +33,14 @@ public class PolicyHandler{
 
         if(driverAssignFailed.isMe()){
 
-            Call call = new Call();
-            call.setId(driverAssignFailed.getCallId());
-            call.setEventType(driverAssignFailed.getEventType());
-            call.setCallStatus("CANCEL");
+            cr.findById(driverAssignFailed.getCallId()).ifPresent(call -> {
 
-            cr.save(call);
+                call.setId(driverAssignFailed.getCallId());
+                call.setCallStatus("NODRIVER");
+
+                cr.save(call);
+            });
+
         }
     }
 

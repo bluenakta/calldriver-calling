@@ -4,6 +4,7 @@ public class DriverRequested extends AbstractEvent {
 
     private Long id;
     private String callStatus;
+   // private Long callId;
 
     public DriverRequested(){
         super();
@@ -23,4 +24,12 @@ public class DriverRequested extends AbstractEvent {
     public void setCallStatus(String callStatus) {
         this.callStatus = callStatus;
     }
+
+ //   public Long getCallId() {
+ //       return callId;
+ //   }
+
+  //  public void setCallId(Long callId) {
+  //      this.callId = callId;
+ //   }
 }
