@@ -17,6 +17,11 @@ public class Call {
     @PostPersist
     public void onPostPersist(){
 
+        CallReceived callReceived = new CallReceived();
+        BeanUtils.copyProperties(this, callReceived);
+        callReceived.publishAfterCommit();
+
+
         //Following code causes dependency to external APIs
         // it is NOT A GOOD PRACTICE. instead, Event-Policy mapping is recommended.
 
