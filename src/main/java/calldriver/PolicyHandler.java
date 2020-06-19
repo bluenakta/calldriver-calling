@@ -21,6 +21,7 @@ public class PolicyHandler{
 
             cr.findById(payed.getCallId()).ifPresent(call -> {
 
+                call.setId(payed.getCallId());
                 call.setCallStatus("PAYED");
 
                 cr.save(call);
