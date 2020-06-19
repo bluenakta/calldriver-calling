@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: call
-          image: 271153858532.dkr.ecr.ap-northeast-2.amazonaws.com/admin13-call:latest
+          image: 271153858532.dkr.ecr.ap-northeast-2.amazonaws.com/admin13-call:v3
           ports:
             - containerPort: 8080
           readinessProbe:
