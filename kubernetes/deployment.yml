@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: calling
+  name: admin13-call
   labels:
-    app: calling
+    app: admin13-call
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: calling
+      app: admin13-call
   template:
     metadata:
       labels:
-        app: calling
+        app: admin13-call
     spec:
       containers:
-        - name: calling
+        - name: admin13-call
           image: 271153858532.dkr.ecr.ap-northeast-2.amazonaws.com/admin13-call:v3
           ports:
             - containerPort: 8080
