@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: calling
+  name: call
   labels:
-    app: calling
+    app: call
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: calling
+      app: call
   template:
     metadata:
       labels:
-        app: calling
+        app: call
     spec:
       containers:
-        - name: calling
-          image: username/calling:latest
+        - name: call
+          image: 271153858532.dkr.ecr.ap-northeast-2.amazonaws.com/admin13-call:latest
           ports:
             - containerPort: 8080
           readinessProbe:
